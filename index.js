@@ -3,12 +3,19 @@ function add(numbers) {
         return 0;
     }
 
-    if (numbers.startsWith("//")) {
-        const delimiterLineEnd = numbers.indexOf("\n");
-        const delimiter = numbers.slice(2, delimiterLineEnd);
-        numbers = numbers.slice(delimiterLineEnd + 1);
-        return numbers.split(delimiter).map(Number).reduce((sum, num) => sum + num, 0);
+    let negatives = [];
+
+    const numArray = numbers.split(/,|\n/).map(Number);
+
+    numArray.forEach(num => {
+        if (num < 0) {
+            negatives.push(num);
+        }
+    });
+
+    if (negatives.length > 0) {
+        throw new Error(`negative numbers not allowed: ${negatives.join(', ')}`);
     }
 
-    return numbers.split(/,|\n/).map(Number).reduce((sum, num) => sum + num, 0);
+    return numArray.reduce((sum, num) => sum + num, 0);
 }
