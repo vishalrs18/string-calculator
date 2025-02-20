@@ -5,9 +5,16 @@ function add(numbers) {
 
     let negatives = [];
 
-    const numArray = numbers.split(/,|\n/).map(Number);
+    if (numbers.startsWith("//")) {
+        const delimiterLineEnd = numbers.indexOf("\n");
+        const delimiter = numbers.slice(2, delimiterLineEnd);
+        numbers = numbers.slice(delimiterLineEnd + 1);
+        numbers = numbers.split(delimiter).map(Number);
+    } else {
+        numbers = numbers.split(/,|\n/).map(Number);
+    }
 
-    numArray.forEach(num => {
+    numbers.forEach(num => {
         if (num < 0) {
             negatives.push(num);
         }
@@ -17,5 +24,5 @@ function add(numbers) {
         throw new Error(`negative numbers not allowed: ${negatives.join(', ')}`);
     }
 
-    return numArray.reduce((sum, num) => sum + num, 0);
+    return numbers.reduce((sum, num) => sum + num, 0);
 }
